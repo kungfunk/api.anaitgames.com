@@ -18,7 +18,7 @@ class UsuarioFactory
         $usuario->id = $data["id"];
         $usuario->username = $data["usuario_url"];
         $usuario->email = $data["email"];
-        $usuario->nombre = $data["suario"];
+        $usuario->nombre = $data["usuario"];
         $usuario->last_seen = $data["lastseen"];
         $usuario->ip = $data["ip"];
         $usuario->fecha_alta = $data["fecha_alta"];
@@ -28,8 +28,13 @@ class UsuarioFactory
         $usuario->rango = $data["rango"];
         $usuario->twitter = $data["url_twitter"];
         $usuario->descripcion_anait = $data["equipo_anait_desc"]; //TODO: remove this field
-        $usuario->avatar = $data["id"].".".FileExtensionHelper::mimeToExt($data["avatar_mime_type"]);
-        $usuario->cabecera = $data["id"].".".FileExtensionHelper::mimeToExt($data["cabecera_mime_type"]);
+
+        if($data["avatar_mime_type"])
+            $usuario->avatar = $data["id"].".".FileExtensionHelper::mimeToExt($data["avatar_mime_type"]);
+
+        if($data["cabecera_mime_type"])
+            $usuario->cabecera = $data["id"].".".FileExtensionHelper::mimeToExt($data["cabecera_mime_type"]);
+
         $usuario->patreon = !!$data["patreon"];
         $usuario->options = [
             "notificacion_mail_mensaje" => !!$data["notificacion_mail_mensaje"],
