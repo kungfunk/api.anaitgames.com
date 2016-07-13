@@ -1,0 +1,22 @@
+{
+    "name": "victor/api.anaitgames.com",
+    "require": {
+        "slim/slim": "^3.4",
+        "phpmailer/phpmailer": "dev-master",
+        "tuupola/slim-jwt-auth": "^2.3",
+        "vlucas/phpdotenv": "^2.3",
+        "firebase/php-jwt": "^3.0",
+        "fzaninotto/faker": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Víctor Calzón",
+            "email": "kung.funk@gmail.com"
+        }
+    ]
+}
