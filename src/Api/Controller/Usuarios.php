@@ -9,15 +9,15 @@ use \Database\PDO\Repositories\UsuarioRepository as UsuarioRepository;
 class Usuarios
 {
     protected $ci;
+    private $usuarios_repository;
 
     public function __construct(ContainerInterface $ci) {
         $this->ci = $ci;
+        $this->usuarios_repository = new UsuarioRepository;
     }
 
     public function getPaginated(Request $request, Response $response, $arguments) {
-
-        $repository = new UsuarioRepository;
-        $usuarios = $repository->findAllPaginated(1, 50);
+        $usuarios = $this->usuarios_repository->findAllPaginated(1, 50);
 
         return $response
             ->withHeader("Content-Type", "application/json")
@@ -25,5 +25,21 @@ class Usuarios
                 "status" => "ok",
                 "data" => $usuarios
             ]);
+    }
+
+    public function getUsuario(Request $request, Response $response, $arguments) {
+        $id = $request->getAttribute("id");
+        $usuario = $this->usuarios_repository->getById($id);
+
+        return $response
+            ->withHeader("Content-Type", "application/json")
+            ->withJson([
+                "status" => "ok",
+                "data" => $usuario
+            ]);
+    }
+
+    public function saveUsuario(Request $request, Response $response, $arguments) {
+
     }
 }
