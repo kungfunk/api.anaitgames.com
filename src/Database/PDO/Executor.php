@@ -23,7 +23,7 @@ class Executor
             return $rows;
         } catch (PDOException $e) {
             $this->addToFailed($sql, $data, $e);
-            throw new QueryFailedException("The query just failed", 1);
+            throw new QueryFailedException("The query just failed");
         }
     }
 
@@ -35,7 +35,7 @@ class Executor
             return $result;
         } catch (PDOException $e) {
             $this->addToFailed($sql, $data, $e);
-            throw new QueryFailedException("The insert, update or delete just failed", 1);
+            throw new QueryFailedException("The insert, update or delete just failed");
         }
     }
 

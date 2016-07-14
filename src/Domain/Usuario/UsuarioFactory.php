@@ -45,6 +45,7 @@ class UsuarioFactory
             "notificacion_mail_logro" => !!$data["notificacion_mail_logro"]
         ];
 
+        $usuario->setPassword($data["password"]);
         return $usuario;
     }
     

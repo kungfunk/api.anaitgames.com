@@ -31,7 +31,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getByUsername($username) {
         $data = $this->executor->query(
-            "SELECT * FROM usuarios WHERE usuario_url = :username'",
+            "SELECT * FROM usuario WHERE usuario_url = :username",
             [
                 ":username" => $username
             ]

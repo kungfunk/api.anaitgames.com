@@ -25,6 +25,7 @@ class Usuario
     public $num_notificaciones;
     public $notificaciones;
 
+    private $password;
     private $password_changed;
     private $new_password;
 
@@ -68,6 +69,10 @@ class Usuario
         return $this->rol === "1";
     }
 
+    public function isAdministrator() {
+        return $this->rol === "7";
+    }
+
     public function isPasswordChanged() {
         return $this->password_changed;
     }
@@ -92,6 +97,10 @@ class Usuario
         return CABECERA_PATH.$this->cabecera;
     }
 
+    public function setPassword($hash) {
+        $this->password = $hash;
+    }
+
     public function changePassword($new_password) {
         $this->new_password = $new_password; //TODO: add SHA1 or custom secure here
         $this->password_changed = true;
@@ -105,5 +114,9 @@ class Usuario
 
     public function addVisita() {
         $this->visitas++;
+    }
+
+    public function compareWithEncryptedPassword($plain_password) {
+        return $this->password === $plain_password;
     }
 }

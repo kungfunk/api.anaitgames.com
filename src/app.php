@@ -14,11 +14,10 @@ $dotenv = new Dotenv(__DIR__."/..");
 $dotenv->load();
 
 $container = new Container;
-$app = new App($container, [
-    "settings" => [
-        "displayErrorDetails" => true,
-    ],
-    "errorHandler" => function (Request $request, Response $response, $exception) use ($container) {
+$app = new App($container);
+
+$container["errorHandler"] = function ($container) {
+    return function (Request $request, Response $response, $exception) use ($container) {
         return $container["response"]
             ->withStatus(500)
             ->withHeader("Content-Type", "application/json")
@@ -26,8 +25,8 @@ $app = new App($container, [
                 "status" => "error",
                 "message" => $exception->getMessage()
             ]);
-    }
-]);
+    };
+};
 
 $app->add(new JwtAuthentication([
     "path" => "/",
