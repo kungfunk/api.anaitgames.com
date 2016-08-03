@@ -7,6 +7,7 @@ use \Firebase\JWT\JWT as JWT;
 use \Slim\Container as ContainerInterface;
 use \Database\PDO\Repositories\UsuarioRepository as UsuarioRepository;
 use \Api\Exceptions\AuthenticationException as AuthenticationException;
+use \Libs\CryptographyHelper as CryptographyHelper;
 
 class Auth
 {
@@ -25,12 +26,11 @@ class Auth
         if(!isset($data["username"], $data["password"]) || !$data["username"] || !$data["password"])
             throw new AuthenticationException("Wrong parameters");
 
-        //TODO: check user/pass
         $usuario = $this->usuarios_repository->getByUsername($data["username"]);
         if(!$usuario)
             throw new AuthenticationException("Incorrect username");
-
-        if(!$usuario->compareWithEncryptedPassword($data["password"]))
+        
+        if(!CryptographyHelper::comparePlainTextWithEncrypted($usuario->getPassword(), $data["password"]))
             throw new AuthenticationException("Incorrect password");
 
         if(!$usuario->isAdministrator())

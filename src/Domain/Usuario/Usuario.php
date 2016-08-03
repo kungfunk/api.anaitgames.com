@@ -101,6 +101,10 @@ class Usuario
         $this->password = $hash;
     }
 
+    public function getPassword() {
+        return $this->password;
+    }
+
     public function changePassword($new_password) {
         $this->new_password = $new_password; //TODO: add SHA1 or custom secure here
         $this->password_changed = true;
@@ -114,9 +118,5 @@ class Usuario
 
     public function addVisita() {
         $this->visitas++;
-    }
-
-    public function compareWithEncryptedPassword($plain_password) {
-        return $this->password === $plain_password;
     }
 }

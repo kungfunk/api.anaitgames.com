@@ -17,7 +17,7 @@ class Usuarios
     }
 
     public function getPaginated(Request $request, Response $response, $arguments) {
-        $usuarios = $this->usuarios_repository->findAllPaginated(1, 50);
+        $usuarios = $this->usuarios_repository->findAllPaginated(1, 20);
 
         return $response
             ->withHeader("Content-Type", "application/json")
