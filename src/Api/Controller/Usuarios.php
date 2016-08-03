@@ -17,13 +17,19 @@ class Usuarios
     }
 
     public function getPaginated(Request $request, Response $response, $arguments) {
-        $usuarios = $this->usuarios_repository->findAllPaginated(1, 20);
+        $limit = 15;
+        $page = isset($arguments["page"]) ? $arguments["page"] : 1;
+        $sort_field = isset($arguments["sort_field"]) ? $arguments["sort_field"] : null;
+        $sort_direction = isset($arguments["sort_direction"]) ? $arguments["sort_direction"] : null;
+        $pagination = $this->usuarios_repository->getPaginationLinks($page, $limit);
+        $usuarios = $this->usuarios_repository->findAllPaginated($page, $limit, $sort_field, $sort_direction);
 
         return $response
             ->withHeader("Content-Type", "application/json")
             ->withJson([
                 "status" => "ok",
-                "data" => $usuarios
+                "data" => $usuarios,
+                "links" => $pagination
             ]);
     }
 

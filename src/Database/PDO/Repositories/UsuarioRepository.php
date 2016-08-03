@@ -4,14 +4,27 @@ namespace Database\PDO\Repositories;
 use \Domain\Usuario\Usuario;
 use \Domain\Usuario\UsuarioRepositoryInterface as UsuarioRepositoryInterface;
 use \Domain\Usuario\UsuarioFactory as UsuarioFactory;
+use \Libs\PaginationHelper as PaginationHelper;
 use \Database\PDO\Connector as Connector;
 use \Database\PDO\Executor as Executor;
-use \PDO;
 
 class UsuarioRepository implements UsuarioRepositoryInterface
 {
     protected $connector;
     protected $executor;
+
+    private $sortable_fields = [
+        "username" => "usuario_url",
+        "fecha_alta" => "fecha_alta",
+        "nombre" => "usuario",
+        "email" => "email",
+        "rol" => "rol_id"
+    ];
+
+    private $sortable_directions = [
+        "asc",
+        "desc"
+    ];
 
     public function __construct() {
         $this->connector = Connector::getInstance();
@@ -40,11 +53,11 @@ class UsuarioRepository implements UsuarioRepositoryInterface
         return UsuarioFactory::createUsuarioFromData($data[0]);
     }
 
-    public function findAllPaginated($pag, $limit) {
-        //TODO: change to scalar type hints
-        $start = (int) $pag === 1 ? 0 : (int) $pag * (int) $limit;
-        $end = (int) $start + (int) $limit;
-        $sql = sprintf("SELECT * FROM usuario LIMIT %d, %d", $start, $end);
+    public function findAllPaginated($page, $limit, $sort_field = null, $sort_direction = null) {
+        $bounds = PaginationHelper::getRegistryStartAndEnd($page, $limit);
+        $query_sort_field = array_key_exists($sort_field, $this->sortable_fields) ? $this->sortable_fields[$sort_field] : $this->sortable_fields["username"];
+        $query_sort_direction = in_array($sort_direction, $this->sortable_directions) ? $sort_direction : $this->sortable_directions[0];
+        $sql = sprintf("SELECT * FROM usuario ORDER BY %s %s LIMIT %d, %d", $query_sort_field, $query_sort_direction, $bounds["start"], $bounds["end"]);
         $data = $this->executor->query($sql, null);
 
         $usuarios = [];
@@ -52,6 +65,11 @@ class UsuarioRepository implements UsuarioRepositoryInterface
             $usuarios[] = UsuarioFactory::createUsuarioFromData($usuario);
         }
         return $usuarios;
+    }
+    
+    public function getPaginationLinks($page, $limit) {
+        $total = $this->executor->count("SELECT COUNT(*) FROM usuario");
+        return PaginationHelper::getPaginationLinks($page, $total, $limit);
     }
 
     public function save(Usuario $usuario) {

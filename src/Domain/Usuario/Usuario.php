@@ -7,7 +7,7 @@ class Usuario
     public $username;
     public $email;
     public $nombre;
-    public $lastseen;
+    public $last_seen;
     public $ip;
     public $fecha_alta;
     public $confirmado;
@@ -89,14 +89,6 @@ class Usuario
         return $this->cod_confirmacion;
     }
     
-    public function getAvatarURI() {
-        return AVATAR_PATH.$this->avatar;
-    }
-
-    public function getCabeceraURI() {
-        return CABECERA_PATH.$this->cabecera;
-    }
-
     public function setPassword($hash) {
         $this->password = $hash;
     }

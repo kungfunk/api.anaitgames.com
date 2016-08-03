@@ -30,10 +30,10 @@ class UsuarioFactory
         $usuario->descripcion_anait = $data["equipo_anait_desc"]; //TODO: remove this field
 
         if($data["avatar_mime_type"])
-            $usuario->avatar = $data["id"].".".FileExtensionHelper::mimeToExt($data["avatar_mime_type"]);
+            $usuario->avatar = AVATAR_URL.$data["usuario_url"].".".FileExtensionHelper::mimeToExt($data["avatar_mime_type"]);
 
         if($data["cabecera_mime_type"])
-            $usuario->cabecera = $data["id"].".".FileExtensionHelper::mimeToExt($data["cabecera_mime_type"]);
+            $usuario->cabecera = CABECERA_URL.$data["usuario_url"].".".FileExtensionHelper::mimeToExt($data["cabecera_mime_type"]);
 
         $usuario->patreon = !!$data["patreon"];
         $usuario->options = [
