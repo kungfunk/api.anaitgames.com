@@ -20,7 +20,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getById($id) {
         $data = $this->executor->query(
-            "SELECT * FROM usuarios WHERE id = :id",
+            "SELECT * FROM usuario WHERE id = :id",
             [
                 ":id"  => $id
             ]
@@ -31,7 +31,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getByUsername($username) {
         $data = $this->executor->query(
-            "SELECT * FROM usuarios WHERE usuario_url = :username'",
+            "SELECT * FROM usuario WHERE usuario_url = :username",
             [
                 ":username" => $username
             ]
@@ -41,7 +41,17 @@ class UsuarioRepository implements UsuarioRepositoryInterface
     }
 
     public function findAllPaginated($pag, $limit) {
+        //TODO: change to scalar type hints
+        $start = (int) $pag === 1 ? 0 : (int) $pag * (int) $limit;
+        $end = (int) $start + (int) $limit;
+        $sql = sprintf("SELECT * FROM usuario LIMIT %d, %d", $start, $end);
+        $data = $this->executor->query($sql, null);
 
+        $usuarios = [];
+        foreach ($data as $usuario) {
+            $usuarios[] = UsuarioFactory::createUsuarioFromData($usuario);
+        }
+        return $usuarios;
     }
 
     public function save(Usuario $usuario) {

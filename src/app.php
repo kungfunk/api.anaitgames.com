@@ -4,6 +4,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Api\Authentication\Token as Token;
 use \Slim\Middleware\JwtAuthentication as JwtAuthentication;
 use \Dotenv\Dotenv as Dotenv;
+use \Slim\App as App;
+use \Slim\Container as Container;
 
 require "../vendor/autoload.php";
 require "config.php";
@@ -11,14 +13,19 @@ require "config.php";
 $dotenv = new Dotenv(__DIR__."/..");
 $dotenv->load();
 
-$app = new \Slim\App([
-    'settings' => [
-        'displayErrorDetails' => true
-    ]
-]);
+$container = new Container;
+$app = new App($container);
 
-$container["token"] = function ($container) {
-    return new Token;
+$container["errorHandler"] = function ($container) {
+    return function (Request $request, Response $response, $exception) use ($container) {
+        return $container["response"]
+            ->withStatus(500)
+            ->withHeader("Content-Type", "application/json")
+            ->withJson([
+                "status" => "error",
+                "message" => $exception->getMessage()
+            ]);
+    };
 };
 
 $app->add(new JwtAuthentication([
@@ -37,17 +44,14 @@ $app->add(new JwtAuthentication([
             ]);
     },
     "callback" => function ($request, $response, $arguments) use ($container) {
-        //$container["token"]->hydrate($arguments["decoded"]);
+        $container["token"] = new Token;
+        $container["token"]->hydrate($arguments["decoded"]);
     }
 ]));
 
 $app->post('/auth/token', '\Api\Controller\Auth:token');
 $app->get('/usuarios', '\Api\Controller\Usuarios:getPaginated');
+$app->get('/usuarios/{id:[0-9]+}', '\Api\Controller\Usuarios:getUsuario');
+$app->post('/usuarios/{id:[0-9]+}', '\Api\Controller\Usuarios:saveUsuario');
 
-$app->get("/hello/{name}", function (Request $request, Response $response) {
-    $name = $request->getAttribute("name");
-    $response->withJson(['name' => $name, 'age' => 40]);
-
-    return $response;
-});
 $app->run();

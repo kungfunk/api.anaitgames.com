@@ -25,6 +25,7 @@ class Usuario
     public $num_notificaciones;
     public $notificaciones;
 
+    private $password;
     private $password_changed;
     private $new_password;
 
@@ -68,6 +69,10 @@ class Usuario
         return $this->rol === "1";
     }
 
+    public function isAdministrator() {
+        return $this->rol === "7";
+    }
+
     public function isPasswordChanged() {
         return $this->password_changed;
     }
@@ -90,6 +95,14 @@ class Usuario
 
     public function getCabeceraURI() {
         return CABECERA_PATH.$this->cabecera;
+    }
+
+    public function setPassword($hash) {
+        $this->password = $hash;
+    }
+
+    public function getPassword() {
+        return $this->password;
     }
 
     public function changePassword($new_password) {
