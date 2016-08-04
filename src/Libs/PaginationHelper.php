@@ -18,14 +18,7 @@ class PaginationHelper
         ];
     }
 
-    public static function getRegistryStartAndEnd($page, $limit) {
-        //TODO: change to scalar type hints
-        $start = (int) $page === 1 ? 0 : (int) $page * (int) $limit;
-        $end = (int) $start + (int) $limit;
-
-        return [
-            "start" => $start,
-            "end" => $end
-        ];
+    public static function getRegistryOffset($page, $limit) {
+        return $page === 1 ? 0 : ($page - 1) * $limit;
     }
 }

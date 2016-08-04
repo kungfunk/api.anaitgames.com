@@ -16,13 +16,15 @@ class Usuarios
         $this->usuarios_repository = new UsuarioRepository;
     }
 
-    public function getPaginated(Request $request, Response $response, $arguments) {
+    public function getPaginated(Request $request, Response $response) {
+        $query_params = $request->getQueryParams();
         $limit = 15;
-        $page = isset($arguments["page"]) ? $arguments["page"] : 1;
-        $sort_field = isset($arguments["sort_field"]) ? $arguments["sort_field"] : null;
-        $sort_direction = isset($arguments["sort_direction"]) ? $arguments["sort_direction"] : null;
-        $pagination = $this->usuarios_repository->getPaginationLinks($page, $limit);
-        $usuarios = $this->usuarios_repository->findAllPaginated($page, $limit, $sort_field, $sort_direction);
+        $page = isset($query_params["page"]) ? (int) $query_params["page"] : 1;
+        $sort_field = isset($query_params["sort_field"]) ? $query_params["sort_field"] : null;
+        $sort_reverse = isset($query_params["sort_reverse"]) ? filter_var($query_params["sort_reverse"], FILTER_VALIDATE_BOOLEAN) : null;
+        $search_string = isset($query_params["search_string"]) ? $query_params["search_string"] : null;
+        $pagination = $this->usuarios_repository->getPaginationLinks($page, $limit, $search_string);
+        $usuarios = $this->usuarios_repository->findAllPaginated($page, $limit, $search_string, $sort_field, $sort_reverse);
 
         return $response
             ->withHeader("Content-Type", "application/json")
@@ -34,7 +36,7 @@ class Usuarios
     }
 
     public function getUsuario(Request $request, Response $response, $arguments) {
-        $id = $request->getAttribute("id");
+        $id = $arguments["id"];
         $usuario = $this->usuarios_repository->getById($id);
 
         return $response
