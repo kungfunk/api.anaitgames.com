@@ -20,7 +20,7 @@ class Auth
         $this->usuarios_repository = new UsuarioRepository;
     }
 
-    public function token(Request $request, Response $response, $arguments) {
+    public function getToken(Request $request, Response $response, $arguments) {
         $data = $request->getParsedBody();
 
         if(!isset($data["username"], $data["password"]) || !$data["username"] || !$data["password"])
@@ -33,6 +33,7 @@ class Auth
         if(!CryptographyHelper::comparePlainTextWithEncrypted($usuario->getPassword(), $data["password"]))
             throw new AuthenticationException("Incorrect password");
 
+        // TODO: for now, the api is only for admin level. This will change.
         if(!$usuario->isAdministrator())
             throw new AuthenticationException("Not enought permissions");
 

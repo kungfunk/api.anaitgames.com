@@ -49,9 +49,23 @@ $app->add(new JwtAuthentication([
     }
 ]));
 
-$app->post('/auth/token', '\Api\Controller\Auth:token');
-$app->get('/usuarios', '\Api\Controller\Usuarios:getPaginated');
+$app->post('/auth/token', '\Api\Controller\Auth:getToken');
+$app->get('/usuarios', '\Api\Controller\Usuarios:getUsuariosPaginated');
 $app->get('/usuarios/{id:[0-9]+}', '\Api\Controller\Usuarios:getUsuario');
 $app->post('/usuarios/{id:[0-9]+}', '\Api\Controller\Usuarios:saveUsuario');
+$app->delete('/usuarios/{id:[0-9]+}', '\Api\Controller\Usuarios:deleteUsuario');
+$app->get('/usuarios/{id:[0-9]+}/logros', '\Api\Controller\Usuarios:getLogros');
+$app->post('/usuarios/{id:[0-9]+}/logros', '\Api\Controller\Usuarios:addLogro');
+
+$app->get('/logros', '\Api\Controller\Logros:getLogrosPaginated');
+$app->get('/logros/{id:[0-9]+}', '\Api\Controller\Logros:getLogro');
+$app->post('/logros/{id:[0-9]+}', '\Api\Controller\Logros:saveLogro');
+
+$app->get('/articulos', '\Api\Controller\Articulos:getArticulosPaginated');
+$app->get('/articulos/{url:[a-z0-9-]+}', '\Api\Controller\Articulos:getArticulo');
+$app->post('/articulos/{url:[a-z0-9-]+}', '\Api\Controller\Articulos:saveArticulo');
+$app->delete('/articulos/{url:[a-z0-9-]+}', '\Api\Controller\Articulos:deleteArticulo');
+$app->get('/articulos/{url:[a-z0-9-]+}/comentarios', '\Api\Controller\Articulos:getComentarios');
+$app->post('/articulos/{url:[a-z0-9-]+}/comentarios', '\Api\Controller\Articulos:getComentarios');
 
 $app->run();

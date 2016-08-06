@@ -13,6 +13,17 @@ class UsuarioRepository implements UsuarioRepositoryInterface
     protected $connector;
     protected $executor;
 
+    private $db_querys = [
+        "get_by_id" => "SELECT * FROM usuario WHERE id = :id",
+        "get_by_username" => "SELECT * FROM usuario WHERE usuario_url = :username",
+        "find_all_limit_offset" => "SELECT * FROM usuario ORDER BY %s %s LIMIT %d OFFSET %d",
+        "find_all_search_limit_offset" => "SELECT * FROM usuario WHERE usuario_url like :search OR usuario like :search OR email like :search ORDER BY %s %s LIMIT %d OFFSET %d",
+        "count_all" => "SELECT COUNT(*) FROM usuario",
+        "count_all_search" => "SELECT COUNT(*) FROM usuario WHERE usuario_url like :search OR usuario like :search OR email like :search",
+        "insert_or_update" => "INSERT INTO usuarios (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s",
+        "delete" => "DELETE FROM usuarios WHERE id = :id"
+    ];
+
     private $sortable_fields = [
         "username" => "usuario_url",
         "fecha_alta" => "fecha_alta",
@@ -33,7 +44,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getById($id) {
         $this->executor->prepare(
-            "SELECT * FROM usuario WHERE id = :id",
+            $this->db_querys["get_by_id"],
             [
                 ":id"  => $id
             ]
@@ -45,7 +56,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getByUsername($username) {
         $this->executor->prepare(
-            "SELECT * FROM usuario WHERE usuario_url = :username",
+            $this->db_querys["get_by_username"],
             [
                 ":username" => $username
             ]
@@ -60,14 +71,14 @@ class UsuarioRepository implements UsuarioRepositoryInterface
         $query_sort_field = array_key_exists($sort_field, $this->sortable_fields) ? $this->sortable_fields[$sort_field] : $this->sortable_fields["username"];
         $query_sort_direction = $sort_reverse === true ? $this->sortable_directions[1] : $this->sortable_directions[0];
         $params = null;
-        $where = null;
+        $query = $this->db_querys["find_all_limit_offset"];
         if(!empty($search_string)) {
-            $where = "WHERE usuario_url like :search OR usuario like :search OR email like :search";
+            $query = $this->db_querys["find_all_search_limit_offset"];
             $params = [
                 ":search" => "%".$search_string."%"
             ];
         }
-        $sql = sprintf("SELECT * FROM usuario %s ORDER BY %s %s LIMIT %d OFFSET %d", $where, $query_sort_field, $query_sort_direction, $limit, $offset);
+        $sql = sprintf($query, $query_sort_field, $query_sort_direction, $limit, $offset);
         $this->executor->prepare($sql, $params);
         $data = $this->executor->fetchAll();
 
@@ -80,14 +91,13 @@ class UsuarioRepository implements UsuarioRepositoryInterface
     
     public function getPaginationLinks($page, $limit, $search_string = null) {
         $params = null;
-        $where = null;
+        $sql = $this->db_querys["count_all"];
         if(!empty($search_string)) {
-            $where = "WHERE usuario_url like :search OR usuario like :search OR email like :search";
+            $sql = $this->db_querys["count_all_search"];
             $params = [
                 ":search" => "%".$search_string."%"
             ];
         }
-        $sql = sprintf("SELECT COUNT(*) FROM usuario %s", $where);
         $this->executor->prepare($sql, $params);
         $total = $this->executor->count();
         return PaginationHelper::getPaginationLinks($page, $total, $limit);
@@ -108,17 +118,15 @@ class UsuarioRepository implements UsuarioRepositoryInterface
         $field_list_colons = implode(", ", $fields_colons);
         $field_list_update = implode(", ", $fields_update);
 
-        $this->executor->prepare(
-            "INSERT INTO usuarios ($field_list) VALUES ($field_list_colons) ON DUPLICATE KEY UPDATE $field_list_update",
-            $dbo
-        );
+        $sql = sprintf($this->db_querys["insert_or_update"], $field_list, $field_list_colons, $field_list_update);
+        $this->executor->prepare($sql, $dbo);
 
         return $this->executor->exec();
     }
 
     public function delete(Usuario $usuario) {
         $this->executor->prepare(
-            "DELETE FROM usuarios WHERE id = :id",
+            $this->db_querys["delete"],
             [
                 ":id" => $usuario->id
             ]

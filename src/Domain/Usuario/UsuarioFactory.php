@@ -22,7 +22,7 @@ class UsuarioFactory
         $usuario->last_seen = $data["lastseen"];
         $usuario->ip = $data["ip"];
         $usuario->fecha_alta = $data["fecha_alta"];
-        $usuario->confirmado = !!$data["email_confirmado"];
+        $usuario->confirmado = filter_var($data["email_confirmado"], FILTER_VALIDATE_BOOLEAN);
         $usuario->rol = $data["id_rol"]; //TODO: change this to enum.
         $usuario->visitas = (int) $data["num_logins"];
         $usuario->rango = $data["rango"];
@@ -35,7 +35,7 @@ class UsuarioFactory
         if($data["cabecera_mime_type"])
             $usuario->cabecera = CABECERA_URL.$data["usuario_url"].".".FileExtensionHelper::mimeToExt($data["cabecera_mime_type"]);
 
-        $usuario->patreon = !!$data["patreon"];
+        $usuario->patreon = filter_var($data["patreon"], FILTER_VALIDATE_BOOLEAN);
         $usuario->options = [
             "notificacion_mail_mensaje" => !!$data["notificacion_mail_mensaje"],
             "notificacion_mail_seguimiento" => !!$data["notificacion_mail_seguimiento"],

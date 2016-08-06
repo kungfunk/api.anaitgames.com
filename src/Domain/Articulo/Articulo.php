@@ -61,6 +61,10 @@ class Articulo
         return $this->comentarios_hilo_id;
     }
 
+    public function setHiloComentariosId($id) {
+        $this->comentarios_hilo_id = (int) $id;
+    }
+
     public function addVisita() {
         $this->visitas++;
     }

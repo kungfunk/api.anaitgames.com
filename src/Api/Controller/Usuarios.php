@@ -16,7 +16,7 @@ class Usuarios
         $this->usuarios_repository = new UsuarioRepository;
     }
 
-    public function getPaginated(Request $request, Response $response) {
+    public function getUsuariosPaginated(Request $request, Response $response) {
         $query_params = $request->getQueryParams();
         $limit = 15;
         $page = isset($query_params["page"]) ? (int) $query_params["page"] : 1;
