@@ -53,7 +53,7 @@ class ArticuloRepository implements ArticuloRepositoryInterface
         );
 
         $data = $this->executor->fetch();
-        return ArticuloFactory::createUsuarioFromData($data);
+        return ArticuloFactory::createArticuloFromData($data);
     }
 
     public function getByUrl($url) {
