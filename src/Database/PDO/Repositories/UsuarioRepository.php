@@ -13,7 +13,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
     protected $connector;
     protected $executor;
 
-    private $db_querys = [
+    private static $db_querys = [
         "get_by_id" => "SELECT * FROM usuario WHERE id = :id",
         "get_by_username" => "SELECT * FROM usuario WHERE usuario_url = :username",
         "find_all_limit_offset" => "SELECT * FROM usuario ORDER BY %s %s LIMIT %d OFFSET %d",
@@ -24,7 +24,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
         "delete" => "DELETE FROM usuarios WHERE id = :id"
     ];
 
-    private $sortable_fields = [
+    private static $sortable_fields = [
         "username" => "usuario_url",
         "fecha_alta" => "fecha_alta",
         "nombre" => "usuario",
@@ -32,7 +32,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
         "rol" => "id_rol"
     ];
 
-    private $sortable_directions = [
+    private static $sortable_directions = [
         "asc",
         "desc"
     ];
@@ -44,7 +44,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getById($id) {
         $this->executor->prepare(
-            $this->db_querys["get_by_id"],
+            self::$db_querys["get_by_id"],
             [
                 ":id"  => $id
             ]
@@ -56,7 +56,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function getByUsername($username) {
         $this->executor->prepare(
-            $this->db_querys["get_by_username"],
+            self::$db_querys["get_by_username"],
             [
                 ":username" => $username
             ]
@@ -68,12 +68,12 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function findAllPaginated($page, $limit, $search_string = null, $sort_field = null, $sort_reverse = null) {
         $offset = PaginationHelper::getRegistryOffset($page, $limit);
-        $query_sort_field = array_key_exists($sort_field, $this->sortable_fields) ? $this->sortable_fields[$sort_field] : $this->sortable_fields["username"];
-        $query_sort_direction = $sort_reverse === true ? $this->sortable_directions[1] : $this->sortable_directions[0];
+        $query_sort_field = array_key_exists($sort_field, self::$sortable_fields) ? self::$sortable_fields[$sort_field] : self::$sortable_fields["username"];
+        $query_sort_direction = $sort_reverse === true ? self::$sortable_directions[1] : self::$sortable_directions[0];
         $params = null;
-        $query = $this->db_querys["find_all_limit_offset"];
+        $query = self::$db_querys["find_all_limit_offset"];
         if(!empty($search_string)) {
-            $query = $this->db_querys["find_all_search_limit_offset"];
+            $query = self::$db_querys["find_all_search_limit_offset"];
             $params = [
                 ":search" => "%".$search_string."%"
             ];
@@ -91,9 +91,9 @@ class UsuarioRepository implements UsuarioRepositoryInterface
     
     public function getPaginationLinks($page, $limit, $search_string = null) {
         $params = null;
-        $sql = $this->db_querys["count_all"];
+        $sql = self::$db_querys["count_all"];
         if(!empty($search_string)) {
-            $sql = $this->db_querys["count_all_search"];
+            $sql = self::$db_querys["count_all_search"];
             $params = [
                 ":search" => "%".$search_string."%"
             ];
@@ -118,7 +118,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
         $field_list_colons = implode(", ", $fields_colons);
         $field_list_update = implode(", ", $fields_update);
 
-        $sql = sprintf($this->db_querys["insert_or_update"], $field_list, $field_list_colons, $field_list_update);
+        $sql = sprintf(self::$db_querys["insert_or_update"], $field_list, $field_list_colons, $field_list_update);
         $this->executor->prepare($sql, $dbo);
 
         return $this->executor->exec();
@@ -126,7 +126,7 @@ class UsuarioRepository implements UsuarioRepositoryInterface
 
     public function delete(Usuario $usuario) {
         $this->executor->prepare(
-            $this->db_querys["delete"],
+            self::$db_querys["delete"],
             [
                 ":id" => $usuario->id
             ]
