@@ -36,8 +36,8 @@ class Articulos
     }
 
     public function getArticulo(Request $request, Response $response, $arguments) {
-        $url = $arguments["url"];
-        $articulo = $this->articulos_repository->getByUrl($url);
+        $id = $arguments["id"];
+        $articulo = $this->articulos_repository->getById($id);
 
         return $response
             ->withHeader("Content-Type", "application/json")
