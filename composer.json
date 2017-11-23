@@ -2,10 +2,9 @@
     "name": "victor/api.anaitgames.com",
     "require": {
         "slim/slim": "^3.4",
-        "phpmailer/phpmailer": "dev-master",
-        "tuupola/slim-jwt-auth": "^2.3",
+        "phpmailer/phpmailer": "~6.0",
         "vlucas/phpdotenv": "^2.3",
-        "firebase/php-jwt": "^3.0"
+        "illuminate/database": "~5.1"
     },
     "autoload": {
         "psr-4": {
