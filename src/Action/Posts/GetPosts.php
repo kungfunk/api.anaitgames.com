@@ -14,8 +14,6 @@ class GetPosts
     private $responder;
     private $input;
 
-    const POSTS_LIMIT = 10;
-
     function __construct() {
         $this->posts_repository = new PostsRepository;
         $this->responder = new Responder;
@@ -32,8 +30,9 @@ class GetPosts
                 'tags' => $this->input->tags,
                 'order_by' => $this->input->order_by,
                 'order' => $this->input->order,
-            ],
-            $this::POSTS_LIMIT
+                'limit' => $this->input->limit,
+                'offset' => $this->input->offset,
+            ]
         );
 
         return $this->responder->success($response, $posts);

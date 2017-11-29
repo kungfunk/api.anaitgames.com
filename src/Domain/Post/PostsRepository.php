@@ -4,7 +4,6 @@ namespace Domain\Post;
 
 class PostsRepository
 {
-    const DEFAULT_ORDER = 'desc';
     const OPERATOR_LIKE = 'like';
     const LIKE_BOUNDERS = '%';
 
@@ -14,10 +13,9 @@ class PostsRepository
         $this->post_model = new Post;
     }
 
-    function getPostsPaginated($options, $limit = 10) {
-        $query = $this->post_model
-            ->query()
-            ->select('name', 'email as user_email');
+    function getPostsPaginated($options) {
+        // TODO: add type and tags to the filters
+        $query = $this->post_model->query();
 
         if(!is_null($options['search'])) {
             $query = $query->where(
@@ -27,12 +25,11 @@ class PostsRepository
             );
         }
 
-        if(!is_null($options['order_by'])) {
-            $order = !is_null($options['order']) ? $options['order'] : $this::DEFAULT_ORDER;
-            $query = $query->orderBy($options['order_by'], $order);
-        }
-
-        $query = $query->take($limit);
-        return $query->get();
+        return $query
+            ->where('status', $options['status'])
+            ->orderBy($options['order_by'], $options['order'])
+            ->offset($options['offset'])
+            ->limit($options['limit'])
+            ->get();
     }
 }
