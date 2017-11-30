@@ -38,5 +38,6 @@ $container["errorHandler"] = function ($container) {
 };
 
 $app = new App($container);
-$app->get('/posts', '\Action\Posts\GetPosts');
+$app->get('/posts', '\API\GetPosts\GetPostsAction');
+$app->get('/posts/{id}', '\API\GetPostById\GetPostByIdAction');
 $app->run();

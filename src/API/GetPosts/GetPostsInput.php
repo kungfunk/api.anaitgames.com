@@ -1,5 +1,5 @@
 <?php
-namespace Action\Posts;
+namespace API\GetPosts;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;

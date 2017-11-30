@@ -1,14 +1,14 @@
 <?php
 
-namespace Action\Posts;
+namespace API\GetPosts;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Domain\Post\PostsRepository as PostsRepository;
-use Action\Posts\GetPostsResponder as Responder;
-use Action\Posts\GetPostsInput as Input;
+use API\GetPosts\GetPostsResponder as Responder;
+use API\GetPosts\GetPostsInput as Input;
 
-class GetPosts
+class GetPostsAction
 {
     private $posts_repository;
     private $responder;

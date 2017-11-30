@@ -5,6 +5,9 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class Post extends Model
 {
+    const ID = 'id';
+    const SLUG = 'slug';
+
     const CREATED_AT = 'creation_date';
     const UPDATED_AT = 'modification_date';
 

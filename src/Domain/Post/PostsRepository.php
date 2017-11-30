@@ -9,11 +9,15 @@ class PostsRepository
 
     private $post_model;
 
-    function __construct() {
+    public function __construct() {
         $this->post_model = new Post;
     }
 
-    function getPostsPaginated($options) {
+    public function getPostById($id) {
+        return $this->post_model->find($id);
+    }
+
+    public function getPostsPaginated($options) {
         // TODO: add type and tags to the filters
         $query = $this->post_model->query();
 
