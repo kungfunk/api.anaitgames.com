@@ -5,8 +5,8 @@ namespace API\GetPostById;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Domain\Post\PostsRepository as PostsRepository;
-use API\GetPostById\GetPostBySlugResponder as Responder;
-use API\GetPostById\GetPostBySlugInput as Input;
+use API\GetPostById\GetPostByIdResponder as Responder;
+use API\GetPostById\GetPostByIdInput as Input;
 
 class GetPostByIdAction
 {

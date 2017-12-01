@@ -1,9 +1,10 @@
 <?php
-namespace API\GetPostById;
+namespace API\GetPostBySlug;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\Post\Post as Post;
+use Libs\SlugValidator as SlugValidator;
 
 class GetPostBySlugInput
 {
@@ -14,8 +15,7 @@ class GetPostBySlugInput
     public function __construct(Request $request) {
         $this->slug = $request->getAttribute(Post::SLUG);
 
-        //TODO: check correct formed slug '/^[a-z][-a-z0-9]*$/'
-        if($this->slug) {
+        if(!SlugValidator::checkSlug($this->slug)) {
             throw new BadInputException(BadInputException::IDENTIFIER_MALFORMED);
         }
     }

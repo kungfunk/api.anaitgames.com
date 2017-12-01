@@ -1,5 +1,5 @@
 <?php
-namespace API\GetPostById;
+namespace API\GetPostBySlug;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use API\Responder as Responder;

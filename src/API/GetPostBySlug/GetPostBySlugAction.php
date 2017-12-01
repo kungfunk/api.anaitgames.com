@@ -1,12 +1,12 @@
 <?php
 
-namespace API\GetPostById;
+namespace API\GetPostBySlug;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Domain\Post\PostsRepository as PostsRepository;
-use API\GetPostById\GetPostBySlugResponder as Responder;
-use API\GetPostById\GetPostBySlugInput as Input;
+use API\GetPostBySlug\GetPostBySlugResponder as Responder;
+use API\GetPostBySlug\GetPostBySlugInput as Input;
 
 class GetPostBySlugAction
 {
