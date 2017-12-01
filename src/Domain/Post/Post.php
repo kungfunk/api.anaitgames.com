@@ -26,6 +26,10 @@ class Post extends Model
         'metadata' => 'array',
     ];
 
+    public function comments() {
+        return $this->hasMany('Domain\Comment\Comment');
+    }
+
 //    protected $dispatchesEvents = [
 //        'created' => PostCreated::class,
 //        'deleted' => PostDeleted::class,

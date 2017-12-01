@@ -1,19 +1,20 @@
 <?php
-namespace API\GetPostBySlug;
+namespace API\GetCommentsFromPost;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\Post\Post as Post;
-use Libs\SlugValidator as SlugValidator;
 
-class GetPostBySlugInput
+class GetCommentsFromPostInput
 {
-    public $slug;
+    const MINIMUM_ID = 1;
+
+    public $id;
 
     public function __construct(Request $request) {
-        $this->slug = $request->getAttribute(Post::SLUG);
+        $this->id = (int) $request->getAttribute(Post::ID);
 
-        if(!SlugValidator::checkSlug($this->slug)) {
+        if($this->id < $this::MINIMUM_ID) {
             throw new BadInputException(BadInputException::IDENTIFIER_MALFORMED);
         }
     }
