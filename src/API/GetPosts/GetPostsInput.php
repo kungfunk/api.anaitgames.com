@@ -4,6 +4,7 @@ namespace API\GetPosts;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\Post\Post as Post;
+use Libs\SlugValidator as SlugValidator;
 
 class GetPostsInput
 {
@@ -15,6 +16,7 @@ class GetPostsInput
     const PARAM_ORDER = 'order';
     const PARAM_LIMIT = 'limit';
     const PARAM_OFFSET = 'offset';
+    const PARAM_SLUG = 'slug';
 
     const STATUS_WHITELIST = [
         Post::STATUS_DRAFT,
@@ -45,6 +47,7 @@ class GetPostsInput
 
     public $search;
     public $type;
+    public $slug;
     public $status;
     public $tags;
     public $order_by;
@@ -55,6 +58,7 @@ class GetPostsInput
     public function __construct(Request $request) {
         $this->search = $request->getQueryParam($this::PARAM_SEARCH, $default = null);
         $this->type = $request->getQueryParam($this::PARAM_TYPE, $default = null);
+        $this->slug = $request->getQueryParam($this::PARAM_SLUG, $default = null);
         $this->status = $request->getQueryParam($this::PARAM_STATUS, $default = $this::DEFAULT_STATUS);
         $this->order_by = $request->getQueryParam($this::PARAM_ORDER_BY, $default = $this::DEFAULT_ORDER_BY);
         $this->order = $request->getQueryParam($this::PARAM_ORDER, $default = $this::DEFAULT_ORDER);
@@ -64,16 +68,45 @@ class GetPostsInput
         $_tags = $request->getQueryParam($this::PARAM_TAGS, $default = null);
         $this->tags = !is_null($_tags) ? explode($this::TAG_DELIMITER, $_tags) : [];
 
-        if($this->limit >= $this::MAX_LIMIT) {
+        $this->isValidLimit($this->limit);
+        $this->isValidOffset($this->offset);
+        $this->isValidStatus($this->status);
+        $this->isValidOrder($this->order, $this->order_by);
+
+        if(!is_null($this->slug)) {
+            $this->isValidSlug($this->slug);
+        }
+    }
+
+    private function isValidLimit($limit) {
+        if($limit >= $this::MAX_LIMIT) {
             throw new BadInputException(BadInputException::LIMIT_EXCEEDED);
         }
+    }
 
+    private function isValidOffset($offset) {
+        if($offset < $this::DEFAULT_OFFSET) {
+            throw new BadInputException(BadInputException::BAD_QUERY_VALUE);
+        }
+    }
+
+    private function isValidStatus($status) {
+        if(!in_array($status, $this::STATUS_WHITELIST)) {
+            throw new BadInputException(BadInputException::BAD_QUERY_VALUE);
+        }
+    }
+
+    private function isValidOrder($order, $order_by) {
         if(
-            $this->offset < $this::DEFAULT_OFFSET ||
-            !in_array($this->status, $this::STATUS_WHITELIST) ||
-            !in_array($this->order_by, $this::ORDER_BY_WHITELIST) ||
-            !in_array($this->order, $this::ORDER_WHITELIST)
+            !in_array($order_by, $this::ORDER_BY_WHITELIST) ||
+            !in_array($order, $this::ORDER_WHITELIST)
         ) {
+            throw new BadInputException(BadInputException::BAD_QUERY_VALUE);
+        }
+    }
+
+    private function isValidSlug($slug) {
+        if(!SlugValidator::checkSlug($this->slug)) {
             throw new BadInputException(BadInputException::BAD_QUERY_VALUE);
         }
     }

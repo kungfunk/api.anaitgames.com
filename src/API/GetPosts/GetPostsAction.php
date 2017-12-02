@@ -26,6 +26,7 @@ class GetPostsAction
             [
                 'search' => $this->input->search,
                 'type' => $this->input->type,
+                'slug' => $this->input->slug,
                 'status' => $this->input->status,
                 'tags' => $this->input->tags,
                 'order_by' => $this->input->order_by,

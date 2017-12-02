@@ -17,10 +17,6 @@ class PostsRepository
         return $this->post_model->find($id);
     }
 
-    public function getPostBySlug($slug) {
-        return $this->post_model->where(Post::SLUG, $slug)->first();
-    }
-
     public function getPostsPaginated($options) {
         // TODO: add type and tags to the filters
         $query = $this->post_model->query();
@@ -31,6 +27,10 @@ class PostsRepository
                 $this::OPERATOR_LIKE,
                 $this::LIKE_BOUNDERS . $options['search'] . $this::LIKE_BOUNDERS
             );
+        }
+
+        if(!is_null($options['slug'])) {
+            $query = $query->where(Post::SLUG, $options['slug']);
         }
 
         return $query

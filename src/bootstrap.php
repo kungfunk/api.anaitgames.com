@@ -40,6 +40,5 @@ $container["errorHandler"] = function ($container) {
 $app = new App($container);
 $app->get('/posts', '\API\GetPosts\GetPostsAction');
 $app->get('/posts/{id}', '\API\GetPostById\GetPostByIdAction');
-$app->get('/posts/slug/{slug}', '\API\GetPostBySlug\GetPostBySlugAction');
 $app->get('/posts/{id}/comments', '\API\GetCommentsFromPost\GetCommentsFromPostAction');
 $app->run();
