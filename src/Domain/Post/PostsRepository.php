@@ -35,6 +35,10 @@ class PostsRepository
 
         return $query
             ->where('status', $options['status'])
+            ->withCount('comments')
+            ->with('category')
+            ->with('user')
+            ->with('tags')
             ->orderBy($options['order_by'], $options['order'])
             ->offset($options['offset'])
             ->limit($options['limit'])

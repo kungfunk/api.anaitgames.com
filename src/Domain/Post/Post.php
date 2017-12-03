@@ -31,8 +31,16 @@ class Post extends Model
         return $this->hasMany('Domain\Comment\Comment');
     }
 
-    public function users() {
+    public function user() {
         return $this->belongsTo('Domain\User\User');
+    }
+
+    public function category() {
+        return $this->belongsTo('Domain\Post\Category');
+    }
+
+    public function tags() {
+        return $this->belongsToMany('Domain\Post\Tag', Tag::TABLE_NAME);
     }
 
 //    protected $dispatchesEvents = [

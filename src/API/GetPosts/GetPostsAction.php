@@ -25,6 +25,9 @@ class GetPostsAction
         $posts = $this->posts_repository->getPostsPaginated(
             [
                 'search' => $this->input->search,
+                'type' => $this->input->type,
+                'slug' => $this->input->slug,
+                'status' => $this->input->status,
                 'order_by' => $this->input->order_by,
                 'order' => $this->input->order,
                 'limit' => $this->input->limit,
