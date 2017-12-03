@@ -21,6 +21,7 @@ class Post extends Model
     const ORDER_BY_NUM_VIEWS = 'num_views';
 
     const DEFAULT_LIMIT = 10;
+    const SEARCHABLE_FIELD = 'title';
 
     protected $casts = [
         'metadata' => 'array',
@@ -28,6 +29,10 @@ class Post extends Model
 
     public function comments() {
         return $this->hasMany('Domain\Comment\Comment');
+    }
+
+    public function users() {
+        return $this->belongsTo('Domain\User\User');
     }
 
 //    protected $dispatchesEvents = [

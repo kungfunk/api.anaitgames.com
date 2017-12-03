@@ -1,40 +1,39 @@
 <?php
 
-namespace Domain\Post;
+namespace Domain\User;
 
-class PostsRepository
+class UsersRepository
 {
     const OPERATOR_LIKE = 'like';
     const LIKE_BOUNDERS = '%';
 
-    private $post_model;
+    private $user_model;
 
     public function __construct() {
-        $this->post_model = new Post;
+        $this->user_model = new User;
     }
 
-    public function getPostById($id) {
-        return $this->post_model->find($id);
+    public function getUserById($id) {
+        return $this->user_model->find($id);
     }
 
-    public function getPostsPaginated($options) {
+    public function getUsersPaginated($options) {
         // TODO: add type and tags to the filters
-        $query = $this->post_model->query();
+        $query = $this->user_model->query();
+
+        if(!is_null($options['username'])) {
+            $query = $query->where('username', $options['username']);
+        }
 
         if(!is_null($options['search'])) {
             $query = $query->where(
-                Post::SEARCHABLE_FIELD,
+                User::SEARCHABLE_FIELD,
                 $this::OPERATOR_LIKE,
                 $this::LIKE_BOUNDERS . $options['search'] . $this::LIKE_BOUNDERS
             );
         }
 
-        if(!is_null($options['slug'])) {
-            $query = $query->where(Post::SLUG, $options['slug']);
-        }
-
         return $query
-            ->where('status', $options['status'])
             ->orderBy($options['order_by'], $options['order'])
             ->offset($options['offset'])
             ->limit($options['limit'])

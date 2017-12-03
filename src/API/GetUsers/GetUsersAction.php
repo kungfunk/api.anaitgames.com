@@ -1,30 +1,31 @@
 <?php
 
-namespace API\GetPosts;
+namespace API\GetUsers;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Domain\Post\PostsRepository as PostsRepository;
-use API\GetPosts\GetPostsResponder as Responder;
-use API\GetPosts\GetPostsInput as Input;
+use Domain\User\UsersRepository as UsersRepository;
+use API\GetUsers\GetUsersResponder as Responder;
+use API\GetUsers\GetUsersInput as Input;
 
-class GetPostsAction
+class GetUsersAction
 {
-    private $posts_repository;
+    private $users_repository;
     private $responder;
     private $input;
 
     function __construct() {
-        $this->posts_repository = new PostsRepository;
+        $this->users_repository = new UsersRepository;
         $this->responder = new Responder;
     }
 
     function __invoke(Request $request, Response $response) {
         $this->input = new Input($request);
 
-        $posts = $this->posts_repository->getPostsPaginated(
+        $posts = $this->users_repository->GetUsersPaginated(
             [
                 'search' => $this->input->search,
+                'username' => $this->input->username,
                 'order_by' => $this->input->order_by,
                 'order' => $this->input->order,
                 'limit' => $this->input->limit,
