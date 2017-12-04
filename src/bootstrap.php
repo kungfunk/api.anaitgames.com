@@ -42,4 +42,7 @@ $app->get('/posts', '\API\GetPosts\GetPostsAction');
 $app->get('/posts/{id}', '\API\GetPostById\GetPostByIdAction');
 $app->get('/posts/{id}/comments', '\API\GetCommentsFromPost\GetCommentsFromPostAction');
 $app->get('/users', '\API\GetUsers\GetUsersAction');
+$app->get('/users/{id}', '\API\GetUsersById\GetUsersByIdAction');
+$app->get('/tags', '\API\GetTags\GetTagsAction');
+$app->get('/categories', '\API\GetCategories\GetCategoriesAction');
 $app->run();
