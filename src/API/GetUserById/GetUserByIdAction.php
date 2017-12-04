@@ -1,28 +1,28 @@
 <?php
 
-namespace API\GetPostById;
+namespace API\GetUserById;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Domain\Post\PostsRepository as PostsRepository;
-use API\GetPostById\GetUserByIdResponder as Responder;
-use API\GetPostById\GetUserByIdInput as Input;
+use Domain\User\UsersRepository as UsersRepository;
+use API\GetUserById\GetUserByIdResponder as Responder;
+use API\GetUserById\GetUserByIdInput as Input;
 
-class GetPostByIdAction
+class GetUserByIdAction
 {
-    private $posts_repository;
+    private $users_repository;
     private $responder;
     private $input;
 
     function __construct() {
-        $this->posts_repository = new PostsRepository;
+        $this->users_repository = new UsersRepository;
         $this->responder = new Responder;
     }
 
     function __invoke(Request $request, Response $response) {
         $this->input = new Input($request);
 
-        $post = $this->posts_repository->getPostById($this->input->id);
+        $post = $this->users_repository->getUserById($this->input->id);
         if(is_null($post)) {
             return $this->responder->notFound($response);
         }
