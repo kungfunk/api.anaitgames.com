@@ -4,7 +4,7 @@ namespace API\GetTags;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Domain\Post\TagsRepository as TagsRepository;
-use API\GetTags\GetCategoriesResponder as Responder;
+use API\GetTags\GetTagsResponder as Responder;
 
 class GetTagsAction
 {

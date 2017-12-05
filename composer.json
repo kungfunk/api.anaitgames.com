@@ -16,5 +16,8 @@
             "name": "Víctor Calzón",
             "email": "kung.funk@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^0.9.1"
+    }
 }
