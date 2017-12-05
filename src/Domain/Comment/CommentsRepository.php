@@ -1,5 +1,4 @@
 <?php
-
 namespace Domain\Comment;
 
 class CommentsRepository

@@ -1,14 +1,13 @@
 <?php
 namespace API\GetPostById;
 
+use API\Input;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\Post\Post as Post;
 
-class GetPostByIdInput
+class GetPostByIdInput extends Input
 {
-    const MINIMUM_ID = 1;
-
     public $id;
 
     public function __construct(Request $request) {

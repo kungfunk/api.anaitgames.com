@@ -1,5 +1,4 @@
 <?php
-
 namespace API\GetTags;
 
 use Psr\Http\Message\ServerRequestInterface as Request;

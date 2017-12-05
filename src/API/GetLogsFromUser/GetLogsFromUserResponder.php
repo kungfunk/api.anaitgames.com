@@ -1,12 +1,12 @@
 <?php
-namespace API\GetUserById;
+namespace API\GetLogsFromUser;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use API\Responder as Responder;
 
-class GetUserByIdResponder extends Responder
+class GetLogsFromUserResponder extends Responder
 {
-    const POST_NOT_FOUND_ERROR_MSG = 'The entity does not exists in our database';
+    const USER_NOT_FOUND_ERROR_MSG = 'The user does not exists in our database';
 
     public function success(Response $response, $data) {
         return $response
@@ -23,7 +23,7 @@ class GetUserByIdResponder extends Responder
             ->withStatus($this::HTTP_STATUS_CODE_NOT_FOUND)
             ->withJson([
                 'status' => $this::STATUS_ERROR,
-                'message' => self::POST_NOT_FOUND_ERROR_MSG
+                'message' => self::USER_NOT_FOUND_ERROR_MSG
             ]);
     }
 }

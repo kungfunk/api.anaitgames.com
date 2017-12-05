@@ -1,23 +1,20 @@
 <?php
-namespace API\GetCommentsFromPost;
+namespace API\GetLogsFromUser;
 
 use API\Input;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
-use Domain\Post\Post as Post;
-use Domain\Comment\Comment as Comment;
+use Domain\User\User as User;
 
-class GetCommentsFromPostInput extends Input
+class GetLogsFromUserInput extends Input
 {
-    const DEFAULT_LIMIT = Comment::DEFAULT_LIMIT;
-
     public $id;
     public $order;
     public $limit;
     public $offset;
 
     public function __construct(Request $request) {
-        $this->id = (int) $request->getAttribute(Post::ID);
+        $this->id = (int) $request->getAttribute(User::ID);
         $this->offset = $request->getQueryParam($this::PARAM_OFFSET, $default = $this::DEFAULT_OFFSET);
         $this->limit = $request->getQueryParam($this::PARAM_LIMIT, $default = $this::DEFAULT_LIMIT);
         $this->order = $request->getQueryParam($this::PARAM_ORDER, $default = $this::DEFAULT_ORDER);

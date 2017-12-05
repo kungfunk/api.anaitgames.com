@@ -1,5 +1,4 @@
 <?php
-
 namespace API\GetPostById;
 
 use Psr\Http\Message\ServerRequestInterface as Request;

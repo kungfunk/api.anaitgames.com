@@ -1,24 +1,15 @@
 <?php
 namespace API\GetUsers;
 
+use API\Input;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\User\User as User;
 use Libs\SlugValidator as SlugValidator;
 
-class GetUsersInput
+class GetUsersInput extends Input
 {
-    const PARAM_SEARCH = 'search';
     const PARAM_USERNAME = 'username';
-    const PARAM_ORDER_BY = 'order_by';
-    const PARAM_ORDER = 'order';
-    const PARAM_LIMIT = 'limit';
-    const PARAM_OFFSET = 'offset';
-
-    const ORDER_WHITELIST = [
-        'desc',
-        'asc'
-    ];
 
     const ORDER_BY_WHITELIST = [
         User::ORDER_BY_REGISTER_DATE,
@@ -27,9 +18,7 @@ class GetUsersInput
     ];
 
     const DEFAULT_LIMIT = User::DEFAULT_LIMIT;
-    const DEFAULT_OFFSET = 0;
     const DEFAULT_ORDER_BY = User::ORDER_BY_REGISTER_DATE;
-    const DEFAULT_ORDER = 'desc';
 
     const MAX_LIMIT = 50;
 

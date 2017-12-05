@@ -1,14 +1,13 @@
 <?php
 namespace API\GetUserById;
 
+use API\Input;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\User\User as User;
 
-class GetUserByIdInput
+class GetUserByIdInput extends Input
 {
-    const MINIMUM_ID = 1;
-
     public $id;
 
     public function __construct(Request $request) {

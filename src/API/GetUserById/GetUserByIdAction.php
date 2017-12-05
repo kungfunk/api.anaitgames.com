@@ -1,5 +1,4 @@
 <?php
-
 namespace API\GetUserById;
 
 use Psr\Http\Message\ServerRequestInterface as Request;

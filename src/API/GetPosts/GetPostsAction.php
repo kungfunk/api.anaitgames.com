@@ -1,5 +1,4 @@
 <?php
-
 namespace API\GetPosts;
 
 use Psr\Http\Message\ServerRequestInterface as Request;

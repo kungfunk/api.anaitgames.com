@@ -19,4 +19,8 @@ class User extends Model
     public function posts() {
         return $this->hasMany('Domain\Posts\Posts');
     }
+
+    public function logs() {
+        return $this->hasMany('Domain\User\Log');
+    }
 }

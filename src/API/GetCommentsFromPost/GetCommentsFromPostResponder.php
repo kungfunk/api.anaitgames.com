@@ -10,19 +10,19 @@ class GetCommentsFromPostResponder extends Responder
 
     public function success(Response $response, $data) {
         return $response
-            ->withStatus(parent::HTTP_STATUS_CODE_OK)
+            ->withStatus($this::HTTP_STATUS_CODE_OK)
             ->withHeader("Content-Type", "application/json")
             ->withJson([
-                'status' => parent::STATUS_SUCCESS,
+                'status' => $this::STATUS_SUCCESS,
                 'data' => $data,
             ]);
     }
 
     public function notFound($response) {
         return $response
-            ->withStatus(parent::HTTP_STATUS_CODE_NOT_FOUND)
+            ->withStatus($this::HTTP_STATUS_CODE_NOT_FOUND)
             ->withJson([
-                'status' => parent::STATUS_ERROR,
+                'status' => $this::STATUS_ERROR,
                 'message' => self::POST_NOT_FOUND_ERROR_MSG
             ]);
     }

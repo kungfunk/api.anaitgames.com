@@ -1,5 +1,4 @@
 <?php
-
 namespace API\GetCategories;
 
 use Psr\Http\Message\ServerRequestInterface as Request;

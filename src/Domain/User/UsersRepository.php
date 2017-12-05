@@ -1,5 +1,4 @@
 <?php
-
 namespace Domain\User;
 
 class UsersRepository

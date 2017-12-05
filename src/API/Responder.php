@@ -1,5 +1,4 @@
 <?php
-
 namespace API;
 
 abstract class Responder

@@ -1,5 +1,4 @@
 <?php
-
 namespace API\GetCommentsFromPost;
 
 use Psr\Http\Message\ServerRequestInterface as Request;

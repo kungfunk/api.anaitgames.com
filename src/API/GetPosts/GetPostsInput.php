@@ -1,32 +1,23 @@
 <?php
 namespace API\GetPosts;
 
+use API\Input;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exceptions\BadInputException as BadInputException;
 use Domain\Post\Post as Post;
 use Libs\SlugValidator as SlugValidator;
 
-class GetPostsInput
+class GetPostsInput extends Input
 {
-    const PARAM_SEARCH = 'search';
     const PARAM_TYPE = 'type';
     const PARAM_STATUS = 'status';
     const PARAM_TAGS = 'tags';
-    const PARAM_ORDER_BY = 'order_by';
-    const PARAM_ORDER = 'order';
-    const PARAM_LIMIT = 'limit';
-    const PARAM_OFFSET = 'offset';
     const PARAM_SLUG = 'slug';
 
     const STATUS_WHITELIST = [
         Post::STATUS_DRAFT,
         Post::STATUS_PUBLISHED,
         Post::STATUS_TRASH
-    ];
-
-    const ORDER_WHITELIST = [
-        'desc',
-        'asc'
     ];
 
     const ORDER_BY_WHITELIST = [
@@ -38,9 +29,7 @@ class GetPostsInput
 
     const DEFAULT_STATUS = Post::STATUS_PUBLISHED;
     const DEFAULT_LIMIT = Post::DEFAULT_LIMIT;
-    const DEFAULT_OFFSET = 0;
     const DEFAULT_ORDER_BY = Post::ORDER_BY_PUBLISH_DATE;
-    const DEFAULT_ORDER = 'desc';
 
     const MAX_LIMIT = 50;
     const TAG_DELIMITER = '|';
