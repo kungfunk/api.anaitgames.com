@@ -38,12 +38,12 @@ $container["errorHandler"] = function ($container) {
 };
 
 $app = new App($container);
-$app->get('/posts', '\API\GetPosts\GetPostsAction');
-$app->get('/posts/{id}', '\API\GetPostById\GetPostByIdAction');
-$app->get('/posts/{id}/comments', '\API\GetCommentsFromPost\GetCommentsFromPostAction');
-$app->get('/users', '\API\GetUsers\GetUsersAction');
-$app->get('/users/{id}', '\API\GetUserById\GetUserByIdAction');
-$app->get('/users/{id}/logs', '\API\GetLogsFromUser\GetLogsFromUserAction');
-$app->get('/tags', '\API\GetTags\GetTagsAction');
-$app->get('/categories', '\API\GetCategories\GetCategoriesAction');
+$app->get('/posts', \API\GetPosts\GetPostsAction::class);
+$app->get('/posts/{id}', \API\GetPostById\GetPostByIdAction::class);
+$app->get('/posts/{id}/comments', \API\GetCommentsFromPost\GetCommentsFromPostAction::class);
+$app->get('/users', \API\GetUsers\GetUsersAction::class);
+$app->get('/users/{id}', \API\GetUserById\GetUserByIdAction::class);
+$app->get('/users/{id}/logs', \API\GetLogsFromUser\GetLogsFromUserAction::class);
+$app->get('/tags', \API\GetTags\GetTagsAction::class);
+$app->get('/categories', \API\GetCategories\GetCategoriesAction::class);
 $app->run();
